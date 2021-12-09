@@ -54,7 +54,7 @@ export class PersonaController {
     const asunto = 'Registro en la plataforma';
     const contenido = `Hola ${persona.nombres}, su nombre de usuario es: ${persona.correo} y su contraseña es: ${clave}`;
     fetch(`http://127.0.0.1:5000/envio-correo?correo_destino=${destino}&asunto=${asunto}&contenido=${contenido}`)
-    .then((data: any) => {
+      .then((data: any) => {
         console.log(data);
       })
     return p;

@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -7,25 +8,25 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
 import {Producto} from '../models';
 import {ProductoRepository} from '../repositories';
-
 export class ProductoController {
   constructor(
     @repository(ProductoRepository)
-    public productoRepository : ProductoRepository,
+    public productoRepository: ProductoRepository,
   ) {}
 
+  @authenticate('admin')
   @post('/productos')
   @response(200, {
     description: 'Producto model instance',
@@ -52,9 +53,7 @@ export class ProductoController {
     description: 'Producto model count',
     content: {'application/json': {schema: CountSchema}},
   })
-  async count(
-    @param.where(Producto) where?: Where<Producto>,
-  ): Promise<Count> {
+  async count(@param.where(Producto) where?: Where<Producto>): Promise<Count> {
     return this.productoRepository.count(where);
   }
 
@@ -106,7 +105,8 @@ export class ProductoController {
   })
   async findById(
     @param.path.string('id') id: string,
-    @param.filter(Producto, {exclude: 'where'}) filter?: FilterExcludingWhere<Producto>
+    @param.filter(Producto, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Producto>,
   ): Promise<Producto> {
     return this.productoRepository.findById(id, filter);
   }
